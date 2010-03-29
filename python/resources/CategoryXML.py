@@ -48,7 +48,7 @@ class CategoryXML(DeferredXML):
                 child.appendChild(self.getCDATANode('name', row[1]))
                 preview = self.createElement('preview')
                 preview.setAttribute('id', str(row[4]))
-                preview.appendChild(self.getCDATANode('base', row[3]))
+                preview.appendChild(self.getCDATANode('server', row[3]))
                 preview.appendChild(self.getCDATANode('type', row[5]))
                 child.appendChild(preview)
                 children.appendChild(child)
