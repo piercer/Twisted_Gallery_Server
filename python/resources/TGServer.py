@@ -3,7 +3,7 @@ from twisted.enterprise import adbapi
 from twisted.application import internet
 from GalleryRoot import GalleryRoot
 
-class FWGServer(internet.TCPServer):
+class TGServer(internet.TCPServer):
     def __init__(self,config):
         dbhost = config.get('Database','host')
         dbuser = config.get('Database','user')
