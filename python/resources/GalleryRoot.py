@@ -6,7 +6,6 @@ from CategoryFactory import CategoryFactory
 from ItemFactory import ItemFactory
 from TagsFactory import TagsFactory
 from AdminDataFactory import AdminDataFactory
-from ImageUploadHandlerFactory import ImageUploadHandlerFactory
 
 class GalleryRoot(resource.Resource):
         
