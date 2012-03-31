@@ -71,7 +71,7 @@ CREATE TABLE  tg_collection_items (
   `id`             int(10) unsigned NOT NULL auto_increment,
   `item_id`        int(10) unsigned NOT NULL,
   `collection_id`  int(10) unsigned NOT NULL,
-  `item_order`     int(10) unsigned NOT NULL default 0
+  `item_order`     int(10) unsigned NOT NULL default 0,
   `published`	   tinyint NOT NULL DEFAULT 1,
   KEY `item_id` (`item_id`),
   KEY `collection_id` (`collection_id`),
