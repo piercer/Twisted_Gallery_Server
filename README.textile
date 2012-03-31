@@ -1,6 +1,18 @@
 h2. Twisted Gallery Server
 
-An experiment with MySQL stored procedures, Python and Twisted Networking.
+An experiment with MySQL stored procedures, Python and Twisted Networking. This is a content server that manages items in a hierarchical
+tree which can be traversed/edited in a semi-restful manner.
+
+It does not render the gallery, but instead returns XML for rendering as you wish.
+
+Example URL's are
+
+* /category/0  The top level category
+* /collection/1  A collection of items
+* /item/3 An item in a collection
+* /item/3/50X50 If the item is an image then you can set the desired resolution of the returned image in the url
+
+The system does have updating by POST requests - documentation for this will follow.
 
 Needs at least MySQL 5.
 
@@ -12,7 +24,7 @@ h2. Preliminary Instructions (very basic and raw, might actually be wrong)
 # Import the sample images using the ruby script
 # Setup your config file correctly
 # Start your server 'twistd -y TGDaemon.py'
-# Look at
+# Look at http://localhost:<port>/category/0 to see the top level category, and then try some other url's
 
 h2. WARNING
 
