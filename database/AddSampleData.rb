@@ -111,14 +111,14 @@ end
 
 dbh=Mysql.init
 dbh.query_with_result=false
-dbh.real_connect("127.0.0.1", "root", "valium10", "fairweatherpunk",3306,nil,Mysql::CLIENT_MULTI_RESULTS)
+dbh.real_connect("127.0.0.1", "<db user>", "<db password>", "twistedgallery",3306,nil,Mysql::CLIENT_MULTI_RESULTS)
 
 dirPath=File.expand_path('./SampleImages/');
 basePath=File.expand_path('./');
 categoryName=File.basename(dirPath)
 parentID=1;
 
-dbh.query("call addServer('FWP Test Server','http://localhost:3306/','#{basePath}','t')")
+dbh.query("call addServer('TG Test Server','http://localhost:3306/','#{basePath}','t')")
 
 dbh.query("call addCategory('#{categoryName}',#{parentID},null,'','','','','','')")
 result=dbh.use_result

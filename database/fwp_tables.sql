@@ -1,9 +1,9 @@
-DROP DATABASE IF EXISTS  fairweatherpunk;
-CREATE DATABASE fairweatherpunk;
+DROP DATABASE IF EXISTS  twistedgallery;
+CREATE DATABASE twistedgallery;
 
-USE fairweatherpunk;
+USE twistedgallery;
 
-CREATE TABLE fwp_servers (
+CREATE TABLE tg_servers (
 	`id`                int(10) unsigned NOT NULL auto_increment,
 	`name`				varchar(255) NOT NULL,
 	`base_url`			varchar(255) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE fwp_servers (
 	PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE fwp_categories (
+CREATE TABLE tg_categories (
   `id`                 int(10) unsigned NOT NULL auto_increment,
   `parent_category_id` int(10) unsigned,
   `name`               varchar(255) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE fwp_categories (
   UNIQUE (`parent_category_id`,`name`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_item_types (
+CREATE TABLE  tg_item_types (
 	`id`            int(10) unsigned NOT NULL auto_increment,
 	`name`			varchar(20),
   	PRIMARY KEY  (`id`),
@@ -41,7 +41,7 @@ CREATE TABLE  fwp_item_types (
   	UNIQUE (`name`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_items (
+CREATE TABLE  tg_items (
 	`id`            int(10) unsigned NOT NULL auto_increment,
 	`server_id`		int(10) unsigned NOT NULL,
 	`path`			text,
@@ -53,7 +53,7 @@ CREATE TABLE  fwp_items (
   	PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_collections (
+CREATE TABLE  tg_collections (
   `id`              int(10) unsigned NOT NULL auto_increment,
   `name`            varchar(255) collate utf8_bin NOT NULL,
   `category_id`     int(10) unsigned NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE  fwp_collections (
   UNIQUE (`category_id`,`name`,`col_date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_collection_items (
+CREATE TABLE  tg_collection_items (
   `id`             int(10) unsigned NOT NULL auto_increment,
   `item_id`        int(10) unsigned NOT NULL,
   `collection_id`  int(10) unsigned NOT NULL,
@@ -82,13 +82,13 @@ CREATE TABLE  fwp_collection_items (
 	Meta Data Tables
 */
 
-CREATE TABLE  fwp_meta (
+CREATE TABLE  tg_meta (
   `id`              int(10) unsigned NOT NULL auto_increment,
   `name`            varchar(255) collate utf8_bin NOT NULL UNIQUE,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_meta_values (
+CREATE TABLE  tg_meta_values (
   `id`              int(10) unsigned NOT NULL auto_increment,
   `value`           text NOT NULL,
   PRIMARY KEY (`id`), 
@@ -96,21 +96,21 @@ CREATE TABLE  fwp_meta_values (
   UNIQUE(value(128))
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE  fwp_item_meta (
+CREATE TABLE  tg_item_meta (
   `item_id`	        int(10) unsigned NOT NULL,
   `meta_id`         int(10) unsigned NOT NULL,
   `value_id`        int(10) unsigned NOT NULL,
   UNIQUE (`item_id`,`meta_id`,`value_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_collection_meta (
+CREATE TABLE  tg_collection_meta (
   `col_id`          int(10) unsigned NOT NULL,
   `meta_id`         int(10) unsigned NOT NULL,
   `value_id`        int(10) unsigned NOT NULL,
   UNIQUE (`col_id`,`meta_id`,`value_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_collection_item_meta (
+CREATE TABLE  tg_collection_item_meta (
   `item_id`         int(10) unsigned NOT NULL,
   `col_id`          int(10) unsigned NOT NULL,
   `meta_id`         int(10) unsigned NOT NULL,
@@ -122,26 +122,26 @@ CREATE TABLE  fwp_collection_item_meta (
 	Tag Tables
 */
 
-CREATE TABLE  fwp_tags (
+CREATE TABLE  tg_tags (
   `id`              int(10) unsigned NOT NULL auto_increment,
   `name`            varchar(255) collate utf8_bin NOT NULL UNIQUE,
   `used`           int(10) unsigned NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_item_tags (
+CREATE TABLE  tg_item_tags (
   `item_id`         int(10) unsigned NOT NULL,
   `tag_id`          int(10) unsigned NOT NULL,
   PRIMARY KEY (item_id,tag_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_collection_tags (
+CREATE TABLE  tg_collection_tags (
   `id`              int(10) unsigned NOT NULL auto_increment,
   `tag_id`          int(10) unsigned NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE  fwp_collection_item_tags (
+CREATE TABLE  tg_collection_item_tags (
   `id`              int(10) unsigned NOT NULL auto_increment,
   `tag_id`          int(10) unsigned NOT NULL,
   PRIMARY KEY  (`id`)
