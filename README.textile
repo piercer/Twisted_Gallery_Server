@@ -1,0 +1,19 @@
+h2. Twisted Gallery Server
+
+An experiment with MySQL stored procedures, Python and Twisted Networking.
+
+Needs at least MySQL 5.
+
+h2. Preliminary Instructions (very basic and raw, might actually be wrong)
+
+# Clone this repository
+# Go to the database directory
+# Import the tables and stored procedures
+# Import the sample images using the ruby script
+# Setup your config file correctly
+# Start your server 'twistd -y TGDaemon.py'
+# Look at
+
+h2. WARNING
+
+* This is the first time that I have made these files public. They may well not work fully at the moment, but they might.
