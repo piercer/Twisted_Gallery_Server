@@ -3,21 +3,8 @@
 #  Copyright (c) 2007. All rights reserved.
 #
 require 'rubygems'
-require 'mysql'
+require 'mysql2'
 require 'exifr'
-
-def clearResults(dbh)
-  more_results=true;
-  begin
-    while more_results
-      rs=dbh.use_result
-      rs.each { |row| }
-      dbh.next_result
-    end
-  rescue Mysql::Error => e
-    more_results=false
-  end
-end
 
 def traverseCategories(parentID,dir,dbh,baseDir)
   months=Hash.new
@@ -41,22 +28,19 @@ def traverseCategories(parentID,dir,dbh,baseDir)
         # Check for subdirectories
         #
         if (hasSubDirectories(newPath))
-          dbh.query("call addCategory('#{entry}',#{parentID},null,'','','','','','')")
-          result=dbh.use_result
-          catID=result.fetch_row()[0]
-          result.free
+          result=dbh.query("call addCategory('#{entry}',#{parentID},null,'','','','','','',0)")
+          catID=result.first["LAST_INSERT_ID()"]
           dbh.next_result
           traverseCategories(catID,newPath,dbh,baseDir)
         else
-          dbh.query("call addCollection(#{parentID},now(),'#{entry}')")
-          result=dbh.use_result
-          colID=result.fetch_row()[0]
-          result.free
+          result=dbh.query("call addCollection(#{parentID},now(),'#{entry}')")
+          colID=result.first["LAST_INSERT_ID()"]
           dbh.next_result
           Dir.chdir(newPath)
           images=Dir.glob("*.{jpg,jpeg}")
           relativePath=/#{baseDir}(.*)/.match(newPath)[1]
           isPreview=1;
+          iItem=0;
           images.each do |image|
             exif=EXIFR::JPEG.new("#{newPath}/#{image}")
             if exif.exif?
@@ -66,26 +50,19 @@ def traverseCategories(parentID,dir,dbh,baseDir)
             else
               itemDate=nil
             end
-            dbh.query("call addCollectionItem(#{colID},1,'#{itemDate}',null,'image/jpeg','#{relativePath}/#{image}',#{isPreview})")
-            result=dbh.use_result
-            itemID=result.fetch_row()[0]
-            result.free
+            result=dbh.query("call addCollectionItem(#{colID},1,'#{itemDate}',null,'image/jpeg','#{relativePath}/#{image}',#{iItem},#{isPreview})")
+            itemID=result.first["item_id"]
             dbh.next_result
             if exif.exif?
               dbh.query("call addMetaForItem(#{itemID},'Camera','#{exif.model}')")
-              clearResults(dbh)
               dbh.query("call addMetaForItem(#{itemID},'Exposure','#{exif.exposure_time.to_s}')")
-              clearResults(dbh)
               dbh.query("call addMetaForItem(#{itemID},'Focal Length','#{exif.focal_length.to_f}mm')")
-              clearResults(dbh)
               dbh.query("call addMetaForItem(#{itemID},'Aperture','f#{exif.f_number.to_f}')")
-              clearResults(dbh)
               dbh.query("call addMetaForItem(#{itemID},'Width','#{exif.height}')")
-              clearResults(dbh)
               dbh.query("call addMetaForItem(#{itemID},'Height','#{exif.width}')")
-              clearResults(dbh)
             end
             isPreview=0
+            iItem+=1;
           end
         end
       end
@@ -109,9 +86,7 @@ def hasSubDirectories(dir)
   result
 end
 
-dbh=Mysql.init
-dbh.query_with_result=false
-dbh.real_connect("127.0.0.1", "<db user>", "<db password>", "twistedgallery",3306,nil,Mysql::CLIENT_MULTI_RESULTS)
+dbh = Mysql2::Client.new(:host => "localhost", :username => "tgsuser", :database => "twistedgallery", :flags => Mysql2::Client::MULTI_STATEMENTS )
 
 dirPath=File.expand_path('./SampleImages/');
 basePath=File.expand_path('./');
@@ -120,10 +95,8 @@ parentID=1;
 
 dbh.query("call addServer('TG Test Server','http://localhost:3306/','#{basePath}','t')")
 
-dbh.query("call addCategory('#{categoryName}',#{parentID},null,'','','','','','')")
-result=dbh.use_result
-catID=result.fetch_row()[0]
-result.free
+result=dbh.query("call addCategory('#{categoryName}',#{parentID},null,'','','','','','',0)")
+catID=result.first["LAST_INSERT_ID()"]
 dbh.next_result
 
 traverseCategories(catID,dirPath,dbh,basePath)
